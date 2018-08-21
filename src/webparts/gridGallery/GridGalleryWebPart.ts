@@ -22,7 +22,7 @@ import { ISPListItem } from './ISPList';
 
 //Imports property pane custom fields
 import { PropertyFieldSPListQuery, PropertyFieldSPListQueryOrderBy } from 'sp-client-custom-fields/lib/PropertyFieldSPListQuery';
-import { PropertyFieldColorPicker } from 'sp-client-custom-fields/lib/PropertyFieldColorPicker';
+import { PropertyFieldColorPickerMini } from 'sp-client-custom-fields/lib/PropertyFieldColorPickerMini';
 import { PropertyFieldFontPicker } from 'sp-client-custom-fields/lib/PropertyFieldFontPicker';
 import { PropertyFieldFontSizePicker } from 'sp-client-custom-fields/lib/PropertyFieldFontSizePicker';
 import { PropertyFieldAlignPicker } from 'sp-client-custom-fields/lib/PropertyFieldAlignPicker';
@@ -202,6 +202,8 @@ export default class GridGalleryWebPart extends BaseClientSideWebPart<IGridGalle
                   showFilters: true,
                   max: 100,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   context: this.context,
                   properties: this.properties,
                   key: "gridGallerySPListField"
@@ -253,6 +255,8 @@ export default class GridGalleryWebPart extends BaseClientSideWebPart<IGridGalle
                   preserveRatio: true,
                   preserveRatioEnabled: true,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   disabled: false,
                   onGetErrorMessage: null,
@@ -304,6 +308,8 @@ export default class GridGalleryWebPart extends BaseClientSideWebPart<IGridGalle
                   label: strings.TextPanelAlignFieldLabel,
                   initialValue: this.properties.textPanelAlign,
                   onPropertyChanged: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "gridGalleryAlignField"
                 }),
@@ -311,6 +317,8 @@ export default class GridGalleryWebPart extends BaseClientSideWebPart<IGridGalle
                   label: strings.TextPanelFontFieldLabel,
                   initialValue: this.properties.textPanelFont,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "gridGalleryFontField"
                 }),
@@ -320,20 +328,26 @@ export default class GridGalleryWebPart extends BaseClientSideWebPart<IGridGalle
                   usePixels: true,
                   preview: true,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "gridGalleryFontSizeField"
                 }),
-                PropertyFieldColorPicker('textPanelFontColor', {
+                PropertyFieldColorPickerMini('textPanelFontColor', {
                   label: strings.TextPanelFontColorFieldLabel,
                   initialColor: this.properties.textPanelFontColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "gridGalleryFontColorField"
                 }),
-                PropertyFieldColorPicker('textPanelBackgroundColor', {
+                PropertyFieldColorPickerMini('textPanelBackgroundColor', {
                   label: strings.TextPanelBackgroundColorFieldLabel,
                   initialColor: this.properties.textPanelBackgroundColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "gridGalleryBgColorField"
                 })
@@ -358,10 +372,12 @@ export default class GridGalleryWebPart extends BaseClientSideWebPart<IGridGalle
                   max: 50,
                   step: 1
                 }),
-                PropertyFieldColorPicker('borderColor', {
+                PropertyFieldColorPickerMini('borderColor', {
                   label: strings.BorderColorFieldLabel,
                   initialColor: this.properties.borderColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "gridGalleryBorderColorField"
                 })

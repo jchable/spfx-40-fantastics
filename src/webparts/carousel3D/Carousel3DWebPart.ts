@@ -21,7 +21,7 @@ import { ICarousel3DWebPartProps } from './ICarousel3DWebPartProps';
 import { PropertyFieldCustomList, CustomListFieldType } from 'sp-client-custom-fields/lib/PropertyFieldCustomList';
 import { PropertyFieldFontPicker } from 'sp-client-custom-fields/lib/PropertyFieldFontPicker';
 import { PropertyFieldFontSizePicker } from 'sp-client-custom-fields/lib/PropertyFieldFontSizePicker';
-import { PropertyFieldColorPicker } from 'sp-client-custom-fields/lib/PropertyFieldColorPicker';
+import { PropertyFieldColorPickerMini } from 'sp-client-custom-fields/lib/PropertyFieldColorPickerMini';
 
 //Loads external JS libs
 import * as $ from 'jquery';
@@ -223,14 +223,16 @@ export default class Carousel3DWebPart extends BaseClientSideWebPart<ICarousel3D
                   value: this.properties.items,
                   headerText: "Manage Items",
                   fields: [
-                    { title: 'Title', required: true, type: CustomListFieldType.string },
-                    { title: 'Enabled', required: true, type: CustomListFieldType.boolean },
-                    { title: 'Picture', required: true, type: CustomListFieldType.string },
+                    { id: 'Title', title: 'Title', required: true, type: CustomListFieldType.string },
+                    { id: 'Enabled', title: 'Enabled', required: true, type: CustomListFieldType.boolean },
+                    { id: 'Picture', title: 'Picture', required: true, type: CustomListFieldType.picture },
                     //{ title: 'Picture', required: true, type: CustomListFieldType.picture },
-                    { title: 'Link Url', required: false, type: CustomListFieldType.string, hidden: true },
-                    { title: 'Link Text', required: false, type: CustomListFieldType.string, hidden: true }
+                    { id: 'Link Url', title: 'Link Url', required: false, type: CustomListFieldType.string, hidden: true },
+                    { id: 'Link Text', title: 'Link Text', required: false, type: CustomListFieldType.string, hidden: true }
                   ],
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   context: this.context,
                   properties: this.properties,
                   key: "carousel3DListField"
@@ -355,6 +357,8 @@ export default class Carousel3DWebPart extends BaseClientSideWebPart<ICarousel3D
                   previewFonts: true,
                   initialValue: this.properties.font,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "carousel3DFontField"
                 }),
@@ -364,13 +368,17 @@ export default class Carousel3DWebPart extends BaseClientSideWebPart<ICarousel3D
                   preview: true,
                   initialValue: this.properties.fontSize,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "carousel3DFontSizeField"
                 }),
-                PropertyFieldColorPicker('fontColor', {
+                PropertyFieldColorPickerMini('fontColor', {
                   label: strings.ColorFieldLabel,
                   initialColor: this.properties.fontColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "carousel3DFontColorField"
                 })

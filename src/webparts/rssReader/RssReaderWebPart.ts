@@ -19,7 +19,7 @@ import * as strings from 'RssReaderStrings';
 import { IRssReaderWebPartProps } from './IRssReaderWebPartProps';
 
 //Imports property pane custom fields
-import { PropertyFieldColorPicker } from 'sp-client-custom-fields/lib/PropertyFieldColorPicker';
+import { PropertyFieldColorPickerMini } from 'sp-client-custom-fields/lib/PropertyFieldColorPickerMini';
 import { PropertyFieldFontPicker } from 'sp-client-custom-fields/lib/PropertyFieldFontPicker';
 import { PropertyFieldFontSizePicker } from 'sp-client-custom-fields/lib/PropertyFieldFontSizePicker';
 
@@ -158,6 +158,8 @@ export default class RssReaderWebPart extends BaseClientSideWebPart<IRssReaderWe
                   label: strings.font,
                   initialValue: this.properties.font,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'rssReaderFontField'
                 }),
@@ -167,20 +169,26 @@ export default class RssReaderWebPart extends BaseClientSideWebPart<IRssReaderWe
                   usePixels: true,
                   preview: true,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'rssReaderFontSizeField'
                 }),
-                PropertyFieldColorPicker('fontColor', {
+                PropertyFieldColorPickerMini('fontColor', {
                   label: strings.fontColor,
                   initialColor: this.properties.fontColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'rssReaderFontColorField'
                 }),
-                PropertyFieldColorPicker('backgroundColor', {
+                PropertyFieldColorPickerMini('backgroundColor', {
                   label: strings.backgroundColor,
                   initialColor: this.properties.backgroundColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'rssReaderBgColorField'
                 })

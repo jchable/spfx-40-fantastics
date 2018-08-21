@@ -20,7 +20,7 @@ import { IBarChartWebPartProps } from './IBarChartWebPartProps';
 
 //Imports the property pane custom fields
 import { PropertyFieldCustomList, CustomListFieldType } from 'sp-client-custom-fields/lib/PropertyFieldCustomList';
-import { PropertyFieldColorPicker } from 'sp-client-custom-fields/lib/PropertyFieldColorPicker';
+import { PropertyFieldColorPickerMini } from 'sp-client-custom-fields/lib/PropertyFieldColorPickerMini';
 import { PropertyFieldFontPicker } from 'sp-client-custom-fields/lib/PropertyFieldFontPicker';
 import { PropertyFieldFontSizePicker } from 'sp-client-custom-fields/lib/PropertyFieldFontSizePicker';
 import { PropertyFieldDimensionPicker } from 'sp-client-custom-fields/lib/PropertyFieldDimensionPicker';
@@ -174,12 +174,14 @@ export default class BarChartWebPart extends BaseClientSideWebPart<IBarChartWebP
                   value: this.properties.items,
                   headerText: strings.ManageItems,
                   fields: [
-                    { title: "Label", required: true, type: CustomListFieldType.string },
-                    { title: "Value", required: true, type: CustomListFieldType.number },
-                    { title: "Color", required: true, type: CustomListFieldType.color },
-                    { title: "Hover Color", required: true, type: CustomListFieldType.color }
+                    { id: 'Label', title: "Label", required: true, type: CustomListFieldType.string },
+                    { id: 'Value', title: "Value", required: true, type: CustomListFieldType.number },
+                    { id: 'Color', title: "Color", required: true, type: CustomListFieldType.colorMini },
+                    { id: 'Hover Color', title: "Hover Color", required: true, type: CustomListFieldType.colorMini }
                   ],
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   context: this.context,
                   properties: this.properties,
                   key: "barChartCustomListField"
@@ -193,6 +195,8 @@ export default class BarChartWebPart extends BaseClientSideWebPart<IBarChartWebP
                   preserveRatio: true,
                   preserveRatioEnabled: true,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   disabled: false,
                   onGetErrorMessage: null,
@@ -239,6 +243,8 @@ export default class BarChartWebPart extends BaseClientSideWebPart<IBarChartWebP
                   previewFonts: true,
                   initialValue: this.properties.titleFont,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "barChartFontField"
                 }),
@@ -248,13 +254,17 @@ export default class BarChartWebPart extends BaseClientSideWebPart<IBarChartWebP
                   preview: true,
                   initialValue: this.properties.titleSize,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "barChartTitleSizeField"
                 }),
-                PropertyFieldColorPicker('titleColor', {
+                PropertyFieldColorPickerMini('titleColor', {
                   label: strings.TitleColor,
                   initialColor: this.properties.titleColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "barChartTitleColorField"
                 })

@@ -18,7 +18,7 @@ import * as strings from 'AudioEqualizerStrings';
 import { IAudioEqualizerWebPartProps } from './IAudioEqualizerWebPartProps';
 
 //Imports the property pane custom fields
-import { PropertyFieldColorPicker } from 'sp-client-custom-fields/lib/PropertyFieldColorPicker';
+import { PropertyFieldColorPickerMini } from 'sp-client-custom-fields/lib/PropertyFieldColorPickerMini';
 import { PropertyFieldDimensionPicker } from 'sp-client-custom-fields/lib/PropertyFieldDimensionPicker';
 
 //Loads JQuery, Reverseorder & equalizer JavaScript libs
@@ -155,6 +155,8 @@ export default class AudioEqualizerWebPart extends BaseClientSideWebPart<IAudioE
                   preserveRatio: true,
                   preserveRatioEnabled: true,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   disabled: false,
                   onGetErrorMessage: null,
@@ -197,24 +199,30 @@ export default class AudioEqualizerWebPart extends BaseClientSideWebPart<IAudioE
                   max: 1000,
                   step: 10
                 }),
-                PropertyFieldColorPicker('color', {
+                PropertyFieldColorPickerMini('color', {
                   label: strings.color,
                   initialColor: this.properties.color,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "audioEqualizerColorField"
                 }),
-                PropertyFieldColorPicker('color1', {
+                PropertyFieldColorPickerMini('color1', {
                   label: strings.color1,
                   initialColor: this.properties.color1,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "audioEqualizerColor1Field"
                 }),
-                PropertyFieldColorPicker('color2', {
+                PropertyFieldColorPickerMini('color2', {
                   label: strings.color2,
                   initialColor: this.properties.color2,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: "audioEqualizerColor2Field"
                 })

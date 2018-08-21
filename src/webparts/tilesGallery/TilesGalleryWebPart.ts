@@ -22,7 +22,7 @@ import { ISPListItem } from './ISPList';
 
 //Imports property pane custom fields
 import { PropertyFieldSPListQuery, PropertyFieldSPListQueryOrderBy } from 'sp-client-custom-fields/lib/PropertyFieldSPListQuery';
-import { PropertyFieldColorPicker } from 'sp-client-custom-fields/lib/PropertyFieldColorPicker';
+import { PropertyFieldColorPickerMini } from 'sp-client-custom-fields/lib/PropertyFieldColorPickerMini';
 import { PropertyFieldFontPicker } from 'sp-client-custom-fields/lib/PropertyFieldFontPicker';
 import { PropertyFieldFontSizePicker } from 'sp-client-custom-fields/lib/PropertyFieldFontSizePicker';
 import { PropertyFieldAlignPicker } from 'sp-client-custom-fields/lib/PropertyFieldAlignPicker';
@@ -185,6 +185,8 @@ export default class TilesGalleryWebPart extends BaseClientSideWebPart<ITilesGal
                   showFilters: true,
                   max: 100,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   context: this.context,
                   properties: this.properties,
                   key: 'tilesGalleryQueryField'
@@ -247,6 +249,8 @@ export default class TilesGalleryWebPart extends BaseClientSideWebPart<ITilesGal
                   label: strings.TextPanelAlignFieldLabel,
                   initialValue: this.properties.textPanelAlign,
                   onPropertyChanged: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tilesGalleryAlignField'
                 }),
@@ -254,6 +258,8 @@ export default class TilesGalleryWebPart extends BaseClientSideWebPart<ITilesGal
                   label: strings.TextPanelFontFieldLabel,
                   initialValue: this.properties.textPanelFont,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tilesGalleryFontField'
                 }),
@@ -263,20 +269,26 @@ export default class TilesGalleryWebPart extends BaseClientSideWebPart<ITilesGal
                   usePixels: true,
                   preview: true,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tilesGalleryFontSizeField'
                 }),
-                PropertyFieldColorPicker('textPanelFontColor', {
+                PropertyFieldColorPickerMini('textPanelFontColor', {
                   label: strings.TextPanelFontColorFieldLabel,
                   initialColor: this.properties.textPanelFontColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tilesGalleryFontColorField'
                 }),
-                PropertyFieldColorPicker('textPanelBackgroundColor', {
+                PropertyFieldColorPickerMini('textPanelBackgroundColor', {
                   label: strings.TextPanelBackgroundColorFieldLabel,
                   initialColor: this.properties.textPanelBackgroundColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tilesGalleryBgColorField'
                 })
@@ -301,10 +313,12 @@ export default class TilesGalleryWebPart extends BaseClientSideWebPart<ITilesGal
                   max: 50,
                   step: 1
                 }),
-                PropertyFieldColorPicker('borderColor', {
+                PropertyFieldColorPickerMini('borderColor', {
                   label: strings.BorderColorFieldLabel,
                   initialColor: this.properties.borderColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tilesGalleryBorderColorField'
                 })

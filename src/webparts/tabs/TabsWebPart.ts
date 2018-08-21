@@ -13,13 +13,14 @@ import {
 } from '@microsoft/sp-webpart-base';
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
 import { SPComponentLoader } from '@microsoft/sp-loader';
+import { Environment, EnvironmentType } from '@microsoft/sp-core-library';
 
 import * as strings from 'TabsStrings';
 import { ITabsWebPartProps } from './ITabsWebPartProps';
 
 //Imports property pane custom fields
 import { PropertyFieldCustomList, CustomListFieldType } from 'sp-client-custom-fields/lib/PropertyFieldCustomList';
-import { PropertyFieldColorPicker } from 'sp-client-custom-fields/lib/PropertyFieldColorPicker';
+import { PropertyFieldColorPickerMini } from 'sp-client-custom-fields/lib/PropertyFieldColorPickerMini';
 
 import * as $ from 'jquery';
 
@@ -54,6 +55,18 @@ export default class TabsWebPart extends BaseClientSideWebPart<ITabsWebPartProps
    * Renders HTML code
    */
   public render(): void {
+
+    if (Environment.type === EnvironmentType.ClassicSharePoint) {
+      var errorHtml = '';
+      errorHtml += '<div style="color: red;">';
+      errorHtml += '<div style="display:inline-block; vertical-align: middle;"><i class="ms-Icon ms-Icon--Error" style="font-size: 20px"></i></div>';
+      errorHtml += '<div style="display:inline-block; vertical-align: middle;margin-left:7px;"><span>';
+      errorHtml += strings.ErrorClassicSharePoint;
+      errorHtml += '</span></div>';
+      errorHtml += '</div>';
+      this.domElement.innerHTML = errorHtml;
+      return;
+    }
 
     var html = '';
     html += `
@@ -143,7 +156,7 @@ Main components
   float: left;
   list-style-type: none;
 }
-.cd-tabs-navigation a {
+.cd-tabs-navigation span {
   position: relative;
   display: block;
   height: 60px;
@@ -157,17 +170,19 @@ Main components
   color: #c3c2b9;
   padding-top: 34px;
   text-decoration: none;
+  cursor: pointer;
 }
-.no-touch .cd-tabs-navigation a:hover {
+.no-touch .cd-tabs-navigation span:hover {
   color: #29324e;
   background-color: rgba(233, 230, 202, 0.3);
 }
-.cd-tabs-navigation a.selected {
+.cd-tabs-navigation span.selected {
   background-color: #ffffff !important;
   box-shadow: inset 0 2px 0 ${this.properties.selectedColor};
   color: #29324e;
+  cursor: auto;
 }
-.cd-tabs-navigation a::before {
+.cd-tabs-navigation span::before {
   /* icons */
   position: absolute;
   top: 12px;
@@ -185,15 +200,15 @@ Main components
     width: 80px;
     float: left;
   }
-  .cd-tabs-navigation a {
+  .cd-tabs-navigation span {
     height: 80px;
     width: 80px;
     padding-top: 46px;
   }
-  .cd-tabs-navigation a.selected {
+  .cd-tabs-navigation span.selected {
     box-shadow: inset 2px 0 0 ${this.properties.selectedColor};
   }
-  .cd-tabs-navigation a::before {
+  .cd-tabs-navigation span::before {
     top: 22px;
   }
 }
@@ -204,7 +219,7 @@ Main components
     background-color: ${this.properties.disableColor};
     box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
   }
-  .cd-tabs-navigation a {
+  .cd-tabs-navigation span {
     height: 60px;
     line-height: 60px;
     width: auto;
@@ -213,10 +228,10 @@ Main components
     font-size: 0.875rem;
     padding: 0 2.8em 0 4em;
   }
-  .cd-tabs-navigation a.selected {
+  .cd-tabs-navigation span.selected {
     box-shadow: inset 0 2px 0 ${this.properties.selectedColor};
   }
-  .cd-tabs-navigation a::before {
+  .cd-tabs-navigation span::before {
     top: 50%;
     margin-top: -10px;
     margin-left: 0;
@@ -285,7 +300,7 @@ Main components
     html += '<div class="cd-tabs"><nav><ul class="cd-tabs-navigation">';
 
     this.properties.tabs.map((tab: any, index: number) => {
-       html += '<li><a data-content="' + this.guid + index + '" class="' + (index == 0 ? "selected" : '') + '" href="#0">' + tab.Title + '</a></li>';
+       html += '<li><span data-content="' + this.guid + index + '" class="' + (index == 0 ? "selected" : '') + '">' + tab.Title + '</span></li>';
     });
 
     html += '</ul></nav><ul class="cd-tabs-content">';
@@ -351,7 +366,7 @@ Main components
             tabContentWrapper = tab.children('ul.cd-tabs-content'),
             tabNavigation = tab.find('nav');
 
-          tabItems.on('click', 'a', function(event){
+          tabItems.on('click', 'span', function(event){
             event.preventDefault();
             var selectedItem = $(this);
             if( !selectedItem.hasClass('selected') ) {
@@ -359,7 +374,7 @@ Main components
                 selectedContent = tabContentWrapper.find('li[data-content="'+selectedTab+'"]'),
                 slectedContentHeight = selectedContent.innerHeight();
 
-              tabItems.find('a.selected').removeClass('selected');
+              tabItems.find('span.selected').removeClass('selected');
               selectedItem.addClass('selected');
               selectedContent.addClass('selected').siblings('li').removeClass('selected');
               //animate tabContentWrapper height when content changes
@@ -367,6 +382,7 @@ Main components
                 'height': slectedContentHeight
               }, 200);
             }
+            return false;
           });
 
           //hide the .cd-tabs::after element when tabbed navigation has scrolled to the end (mobile version)
@@ -435,9 +451,11 @@ Main components
                   value: this.properties.tabs,
                   headerText: strings.ManageTabs,
                   fields: [
-                    { title: 'Title', required: true, type: CustomListFieldType.string }
+                    { id: 'Title', title: 'Title', required: true, type: CustomListFieldType.string }
                   ],
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   context: this.context,
                   properties: this.properties,
                   key: 'tabsListField'
@@ -455,17 +473,21 @@ Main components
             {
               groupName: strings.LayoutGroupName,
               groupFields: [
-                PropertyFieldColorPicker('disableColor', {
+                PropertyFieldColorPickerMini('disableColor', {
                   label: strings.DisableColor,
                   initialColor: this.properties.disableColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tabsDisableColorField'
                 }),
-                PropertyFieldColorPicker('selectedColor', {
+                PropertyFieldColorPickerMini('selectedColor', {
                   label: strings.SelectedColor,
                   initialColor: this.properties.selectedColor,
                   onPropertyChange: this.onPropertyPaneFieldChanged,
+                  render: this.render.bind(this),
+                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
                   properties: this.properties,
                   key: 'tabsSelectedColorField'
                 })
